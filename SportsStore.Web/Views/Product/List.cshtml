@@ -5,6 +5,8 @@
 }
 <h1>Products:</h1>
 
+@Html.ActionLink("Sort", "List", new { page = Model.PagingInfo.CurrentPage, category = Model.CurrentCategory, sortField = "ProductId", sortDirection = Model.PagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
+
 @foreach (var p in Model.Products)
 {
     @Html.Partial("ProductSummary", p)

@@ -50,7 +50,7 @@ namespace SportsStore.UnitTests
             // in order to apply the extension method
             HtmlHelper myHelper = null;
             //Arrage - create PaginInfo data
-            PagingInfo pagingInfo = new PagingInfo
+            SortingPagingInfo pagingInfo = new SortingPagingInfo
             {
                 CurrentPage = 2,
                 ItemsPerPage = 20,
@@ -91,7 +91,7 @@ namespace SportsStore.UnitTests
 
 
             //Assert
-            PagingInfo pagingInfo = result.PagingInfo;
+            SortingPagingInfo pagingInfo = result.PagingInfo;
             Assert.AreEqual(pagingInfo.CurrentPage, 2);
             Assert.AreEqual(pagingInfo.ItemsPerPage, 3);
             Assert.AreEqual(pagingInfo.TotalItems, 6);
@@ -132,7 +132,7 @@ namespace SportsStore.UnitTests
             //Assert
             Product[] products = productListViewModel.Products.ToArray();
 
-            PagingInfo pagingInfo = productListViewModel.PagingInfo;
+            SortingPagingInfo pagingInfo = productListViewModel.PagingInfo;
             Assert.AreEqual(pagingInfo.CurrentPage, 2);
             Assert.AreEqual(pagingInfo.ItemsPerPage, 3);
             Assert.AreEqual(pagingInfo.TotalItems, 5);
