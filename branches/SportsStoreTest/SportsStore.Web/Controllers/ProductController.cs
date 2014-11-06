@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Linq.Dynamic;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain;
 using SportsStore.Web.Models;
-
 namespace SportsStore.Web.Controllers
 {
     public class ProductController : Controller
@@ -20,27 +20,37 @@ namespace SportsStore.Web.Controllers
             repository = productRepository;
         }
 
-        public ViewResult List(string category, int page = 1)
+        public ViewResult List(string category, int page = 1, string sortField = "Name", SortDirection sortDirection = SortDirection.Ascending)
         {
-            IEnumerable<Product> productsInCategory = repository.Products
-                .Where(p => category == null | p.Category == category)
-                .OrderBy(p => p.ProductId);
-                
+            string sortDirectionString = sortDirection == SortDirection.Descending ? " DESC" : " ASC";
+
+            IQueryable<Product> query =
+                repository.Products.AsQueryable()
+                    .Where(p => category == null | p.Category == category)
+                    .OrderBy(sortField + sortDirectionString);
+
+            IEnumerable<Product> productsInCategory = query.AsEnumerable();
+          
+
             ProductListViewModel model = new ProductListViewModel
             {
                 Products = productsInCategory
                     .Skip((page - 1)*PageSize)
                     .Take(PageSize),
-                PagingInfo = new PagingInfo
+                PagingInfo = new SortingPagingInfo
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = productsInCategory.Count()
+                    TotalItems = productsInCategory.Count(),
+                    SortField = sortField,
+                    SortDirection = sortDirection
                 },
                 CurrentCategory = category
             };
 
             return View(model);
         }
+
+
     }
 }
