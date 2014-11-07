@@ -5,14 +5,57 @@
 }
 <h1>Products:</h1>
 
-@Html.ActionLink("Sort", "List", new { page = Model.PagingInfo.CurrentPage, category = Model.CurrentCategory, sortField = "ProductId", sortDirection = Model.PagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
 
-@foreach (var p in Model.Products)
+@*@foreach (var p in Model.Products)
 {
     @Html.Partial("ProductSummary", p)
-}
+}*@
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Product Name", "List", new { category = Model.CurrentCategory, sortHeader = "Product Name", sortDirection = Model.SortingPagingInfo.SortField == "Product Name" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending})
+        </th>
+        <th>
+            @Html.ActionLink("More Info", "List", new { category = Model.CurrentCategory, sortHeader = "More Info", sortDirection = Model.SortingPagingInfo.SortField == "More Info" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
+        </th>
+        <th>
+            @Html.ActionLink("Category", "List", new { category = Model.CurrentCategory, sortHeader = "Category", sortDirection = Model.SortingPagingInfo.SortField == "Category" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
+        </th>
+        <th>
+            Price
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Products)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProductId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
+            </td>
+        </tr>
+    }
+
+</table>
+
 
 
 <div class="pager">
-    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, category = Model.CurrentCategory}))
+    @Html.PageLinks(Model.SortingPagingInfo, x => Url.Action("List", new { page = x, category = Model.CurrentCategory, sortHeader = Model.SortingPagingInfo.SortField, sortDirection = Model.SortingPagingInfo.SortDirection }))
 </div>
