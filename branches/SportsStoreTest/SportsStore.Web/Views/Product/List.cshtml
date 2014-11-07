@@ -15,10 +15,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Product Name", "List", new { category = Model.CurrentCategory, sortHeader = "Product Name", sortDirection = Model.SortingPagingInfo.SortField == "Product Name" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending})
+            @Html.ActionLink("Product Id", "List", new { category = Model.CurrentCategory, sortHeader = "ProductId", sortDirection = Model.SortingPagingInfo.SortField == "ProductId" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
         </th>
         <th>
-            @Html.ActionLink("More Info", "List", new { category = Model.CurrentCategory, sortHeader = "More Info", sortDirection = Model.SortingPagingInfo.SortField == "More Info" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
+            @Html.ActionLink("Product Name", "List", new { category = Model.CurrentCategory, sortHeader = "Name", sortDirection = Model.SortingPagingInfo.SortField == "Name" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
+        </th>
+        <th>
+            @Html.ActionLink("More Info", "List", new { category = Model.CurrentCategory, sortHeader = "Description", sortDirection = Model.SortingPagingInfo.SortField == "Description" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
         </th>
         <th>
             @Html.ActionLink("Category", "List", new { category = Model.CurrentCategory, sortHeader = "Category", sortDirection = Model.SortingPagingInfo.SortField == "Category" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
@@ -32,6 +35,9 @@
     @foreach (var item in Model.Products)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

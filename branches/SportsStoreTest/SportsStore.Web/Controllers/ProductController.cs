@@ -22,7 +22,7 @@ namespace SportsStore.Web.Controllers
             repository = productRepository;
         }
 
-        public ViewResult List(string category, int page = 1, string sortHeader = "Identifier", SortDirection sortDirection = SortDirection.Ascending)
+        public ViewResult List(string category, int page = 1, string sortHeader = "ProductId", SortDirection sortDirection = SortDirection.Ascending)
         {
 
             string sortDirectionString = sortDirection == SortDirection.Ascending ? "ASC" : "DESC";
@@ -32,7 +32,7 @@ namespace SportsStore.Web.Controllers
             IQueryable<Product> query =
                 repository.Products.AsQueryable()
                     .Where(p => category == null | p.Category == category)
-                    .OrderBy(SortingMapping.ProductHeaders[sortHeader] + " " + sortDirectionString);
+                    .OrderBy(sortHeader + " " + sortDirectionString);
 
             IEnumerable<Product> productsInCategory = query.AsEnumerable();
             
