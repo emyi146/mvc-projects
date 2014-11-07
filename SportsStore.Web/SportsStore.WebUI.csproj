@@ -126,10 +126,13 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductsGridController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\SortingHelpers.cs" />
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
+    <Compile Include="HtmlHelpers\SortingMapping.cs" />
     <Compile Include="Infrastructure\GenericRepository.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\SortingPagingInfo.cs" />
@@ -176,10 +179,15 @@
     </Content>
     <Content Include="Views\Shared\ProductSummary.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
+    <Content Include="ViewPage1.cshtml" />
+    <Content Include="Views\ProductsGrid\Create.cshtml" />
+    <Content Include="Views\ProductsGrid\Delete.cshtml" />
+    <Content Include="Views\ProductsGrid\Details.cshtml" />
+    <Content Include="Views\ProductsGrid\Edit.cshtml" />
+    <Content Include="Views\ProductsGrid\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

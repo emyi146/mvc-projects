@@ -6,6 +6,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain;
+using SportsStore.Web.HtmlHelpers;
 using SportsStore.Web.Models;
 namespace SportsStore.Web.Controllers
 {
@@ -13,38 +14,42 @@ namespace SportsStore.Web.Controllers
     {
 
         private IProductRepository repository;
-        public int PageSize = 2;
+        public int PageSize = 3;
+
 
         public ProductController(IProductRepository productRepository)
         {
             repository = productRepository;
         }
 
-        public ViewResult List(string category, int page = 1, string sortField = "Name", SortDirection sortDirection = SortDirection.Ascending)
+        public ViewResult List(string category, int page = 1, string sortHeader = "Identifier", SortDirection sortDirection = SortDirection.Ascending)
         {
-            string sortDirectionString = sortDirection == SortDirection.Descending ? " DESC" : " ASC";
 
+            string sortDirectionString = sortDirection == SortDirection.Ascending ? "ASC" : "DESC";
+                  
+
+            
             IQueryable<Product> query =
                 repository.Products.AsQueryable()
                     .Where(p => category == null | p.Category == category)
-                    .OrderBy(sortField + sortDirectionString);
+                    .OrderBy(SortingMapping.ProductHeaders[sortHeader] + " " + sortDirectionString);
 
             IEnumerable<Product> productsInCategory = query.AsEnumerable();
-          
-
+            
+      
             ProductListViewModel model = new ProductListViewModel
             {
                 Products = productsInCategory
-                    .Skip((page - 1)*PageSize)
+                    .Skip((page - 1) * PageSize)
                     .Take(PageSize),
-                PagingInfo = new SortingPagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = productsInCategory.Count(),
-                    SortField = sortField,
-                    SortDirection = sortDirection
-                },
+                SortingPagingInfo = new SortingPagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = productsInCategory.Count(),
+                        SortField = sortHeader,
+                        SortDirection = sortDirection
+                    },
                 CurrentCategory = category
             };
 

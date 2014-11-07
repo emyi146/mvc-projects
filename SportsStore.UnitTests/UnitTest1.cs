@@ -91,7 +91,7 @@ namespace SportsStore.UnitTests
 
 
             //Assert
-            SortingPagingInfo pagingInfo = result.PagingInfo;
+            SortingPagingInfo pagingInfo = result.SortingPagingInfo;
             Assert.AreEqual(pagingInfo.CurrentPage, 2);
             Assert.AreEqual(pagingInfo.ItemsPerPage, 3);
             Assert.AreEqual(pagingInfo.TotalItems, 6);
@@ -132,7 +132,7 @@ namespace SportsStore.UnitTests
             //Assert
             Product[] products = productListViewModel.Products.ToArray();
 
-            SortingPagingInfo pagingInfo = productListViewModel.PagingInfo;
+            SortingPagingInfo pagingInfo = productListViewModel.SortingPagingInfo;
             Assert.AreEqual(pagingInfo.CurrentPage, 2);
             Assert.AreEqual(pagingInfo.ItemsPerPage, 3);
             Assert.AreEqual(pagingInfo.TotalItems, 5);
@@ -223,10 +223,10 @@ namespace SportsStore.UnitTests
             controller.PageSize = 3;
 
             // Act
-            int result1 = ((ProductListViewModel)controller.List("Cat1", 1).Model).PagingInfo.TotalItems;
-            int result2 = ((ProductListViewModel)controller.List("Cat2", 1).Model).PagingInfo.TotalItems;
-            int result3 = ((ProductListViewModel)controller.List("Cat2", 2).Model).PagingInfo.TotalItems;
-            int result4 = ((ProductListViewModel)controller.List(null, 1).Model).PagingInfo.TotalItems;
+            int result1 = ((ProductListViewModel)controller.List("Cat1", 1).Model).SortingPagingInfo.TotalItems;
+            int result2 = ((ProductListViewModel)controller.List("Cat2", 1).Model).SortingPagingInfo.TotalItems;
+            int result3 = ((ProductListViewModel)controller.List("Cat2", 2).Model).SortingPagingInfo.TotalItems;
+            int result4 = ((ProductListViewModel)controller.List(null, 1).Model).SortingPagingInfo.TotalItems;
        
         
             // Assert
