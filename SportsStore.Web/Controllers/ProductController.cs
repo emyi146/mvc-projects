@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
@@ -28,23 +29,24 @@ namespace SportsStore.Web.Controllers
         {
             CategoryLookup category = getCategoryByName(categoryName);
             int? categoryId = category != null ? category.CategoryLookup_Id : (int?) null;
-
+            string orderParam = sortHeader + " " + (sortDirection == SortDirection.Ascending ? "ASC" : "DESC");
+            ObjectParameter totalRows = new ObjectParameter("totalRows", typeof(int));
             IQueryable<ListProductsByCategory_Result> query =
-                repository.ListProductsByCategory(categoryId).AsQueryable()
+                repository.ListProductsByCategory(categoryId, page, PageSize, orderParam, totalRows).AsQueryable()
                     .OrderBy(sortHeader + " " + sortDirection);
 
             IEnumerable<ListProductsByCategory_Result> productsInCategory = query.AsEnumerable().ToList();
 
             var model = new ProductListViewModel
             {
-                Products = productsInCategory
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
+                Products = productsInCategory,
+                 //   .Skip((page - 1) * PageSize)
+                 //   .Take(PageSize),
                 SortingPagingInfo = new SortingPagingInfo
                     {
                         CurrentPage = page,
                         ItemsPerPage = PageSize,
-                        TotalItems = productsInCategory.Count(),
+                        TotalItems = (int) totalRows.Value,
                         SortField = sortHeader,
                         SortDirection = sortDirection
                     },

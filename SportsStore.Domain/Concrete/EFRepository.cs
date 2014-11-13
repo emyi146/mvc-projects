@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity.Core.Objects;
+using System.Linq;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
 using System.Collections.Generic;
@@ -29,10 +30,11 @@ namespace SportsStore.Domain.Concrete
             }
         }
 
-        public IEnumerable<ListProductsByCategory_Result> ListProductsByCategory(int? categoryId)
+        public IEnumerable<ListProductsByCategory_Result> ListProductsByCategory(int? categoryId, int? page, int? pageSize, string sortParam, ObjectParameter totalRows)
         {
-            return context.ListProductsByCategory(categoryId).AsEnumerable();
+            return context.ListProductsByCategory(categoryId, page, pageSize, sortParam, totalRows).AsEnumerable();
         }
+
     }
     
 }

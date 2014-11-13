@@ -56,6 +56,10 @@
         </Association>
         <Function Name="ListProductsByCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CategoryId" Type="int" Mode="In" />
+          <Parameter Name="Page" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="SortParam" Type="nvarchar" Mode="In" />
+          <Parameter Name="TotalRows" Type="int" Mode="InOut" />
         </Function>
         <EntityContainer Name="SportsStoreModelStoreContainer">
           <EntitySet Name="CategoryLookup" EntityType="Self.CategoryLookup" Schema="dbo" store:Type="Tables" />
@@ -75,9 +79,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="SportsStoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="EFContext" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="ListProductsByCategory" ReturnType="Collection(SportsStoreModel.ListProductsByCategory_Result)">
-          <Parameter Name="CategoryId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="CategoryLookups" EntityType="SportsStoreModel.CategoryLookup" />
           <EntitySet Name="Products" EntityType="SportsStoreModel.Product" />
           <EntitySet Name="ProductCategories" EntityType="SportsStoreModel.ProductCategory" />
@@ -89,14 +90,14 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="ProductCategory" EntitySet="ProductCategories" />
           </AssociationSet>
+          <FunctionImport Name="ListProductsByCategory" ReturnType="Collection(SportsStoreModel.ListProductsByCategory_Result)">
+            <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="Page" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="SortParam" Mode="In" Type="String" />
+            <Parameter Name="TotalRows" Mode="InOut" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="ListProductsByCategory_Result">
-          <Property Type="Int32" Name="Product_Id" Nullable="false" />
-          <Property Type="String" Name="Product_Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Product_Description" Nullable="false" MaxLength="500" />
-          <Property Type="Decimal" Name="Product_Price" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="String" Name="CategoryLookup_Name" Nullable="false" MaxLength="100" />
-        </ComplexType>
         <EntityType Name="CategoryLookup">
           <Key>
             <PropertyRef Name="CategoryLookup_Id" />
@@ -150,23 +151,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="ListProductsByCategory_Result">
+          <Property Type="Int32" Name="Product_Id" Nullable="false" />
+          <Property Type="String" Name="Product_Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Product_Description" Nullable="false" MaxLength="500" />
+          <Property Type="Decimal" Name="Product_Price" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="String" Name="CategoryLookup_Name" Nullable="true" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SportsStoreModelStoreContainer" CdmEntityContainer="EFContext">
-          <FunctionImportMapping FunctionImportName="ListProductsByCategory" FunctionName="SportsStoreModel.Store.ListProductsByCategory">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SportsStoreModel.ListProductsByCategory_Result">
-                <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
-                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
-                <ScalarProperty Name="Product_Description" ColumnName="Product_Description" />
-                <ScalarProperty Name="Product_Price" ColumnName="Product_Price" />
-                <ScalarProperty Name="CategoryLookup_Name" ColumnName="CategoryLookup_Name" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="CategoryLookups">
             <EntityTypeMapping TypeName="SportsStoreModel.CategoryLookup">
               <MappingFragment StoreEntitySet="CategoryLookup">
@@ -195,6 +192,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ListProductsByCategory" FunctionName="SportsStoreModel.Store.ListProductsByCategory" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SportsStoreModel.ListProductsByCategory_Result">
+                <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
+                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
+                <ScalarProperty Name="Product_Description" ColumnName="Product_Description" />
+                <ScalarProperty Name="Product_Price" ColumnName="Product_Price" />
+                <ScalarProperty Name="CategoryLookup_Name" ColumnName="CategoryLookup_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

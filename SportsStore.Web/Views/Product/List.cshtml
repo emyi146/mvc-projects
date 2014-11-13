@@ -27,7 +27,7 @@
             @Html.ActionLink("Category", "List", new { categoryName = Model.CurrentCategory, sortHeader = "CategoryLookup_Name", sortDirection = Model.SortingPagingInfo.SortField == "CategoryLookup_Name" && Model.SortingPagingInfo.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending })
         </th>
         <th>
-            Price
+            @Html.ActionLink("Price", "List", new { categoryName = Model.CurrentCategory, sortHeader = "Product_Price", sortDirection = Model.SortingPagingInfo.SortField == "Product_Price" && Model.SortingPagingInfo.SortDirection == SortDirection.Descending ? SortDirection.Ascending : SortDirection.Descending })
         </th>
         <th></th>
     </tr>
