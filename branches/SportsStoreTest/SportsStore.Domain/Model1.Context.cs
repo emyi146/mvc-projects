@@ -31,13 +31,25 @@ namespace SportsStore.Domain
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
     
-        public virtual ObjectResult<ListProductsByCategory_Result> ListProductsByCategory(Nullable<int> categoryId)
+        public virtual ObjectResult<ListProductsByCategory_Result> ListProductsByCategory(Nullable<int> categoryId, Nullable<int> page, Nullable<int> pageSize, string sortParam, ObjectParameter totalRows)
         {
             var categoryIdParameter = categoryId.HasValue ?
                 new ObjectParameter("CategoryId", categoryId) :
                 new ObjectParameter("CategoryId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ListProductsByCategory_Result>("ListProductsByCategory", categoryIdParameter);
+            var pageParameter = page.HasValue ?
+                new ObjectParameter("Page", page) :
+                new ObjectParameter("Page", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var sortParamParameter = sortParam != null ?
+                new ObjectParameter("SortParam", sortParam) :
+                new ObjectParameter("SortParam", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ListProductsByCategory_Result>("ListProductsByCategory", categoryIdParameter, pageParameter, pageSizeParameter, sortParamParameter, totalRows);
         }
     }
 }
