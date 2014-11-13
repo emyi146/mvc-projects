@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using SportsStore.Domain;
 using SportsStore.Domain.Abstract;
 
 namespace SportsStore.Web.Controllers
@@ -17,14 +18,12 @@ namespace SportsStore.Web.Controllers
             _productRepository = productRepository;
         }
 
-        public PartialViewResult Menu(string category = null)
+        public PartialViewResult Menu(string categoryName = null)
         {
-            IEnumerable<string> categories = _productRepository.Products
-                .Select(p => p.Category)
-                .Distinct()
-                .OrderBy(p => p);
+            IEnumerable<CategoryLookup> categories = _productRepository.Categories
+                .OrderBy(c => c.CategoryLookup_Name);
 
-            ViewBag.SelectedCategory = category;
+            ViewBag.SelectedCategory = categories.FirstOrDefault(c => c.CategoryLookup_Name == categoryName);
             return PartialView(categories);
         }
     }

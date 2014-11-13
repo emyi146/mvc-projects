@@ -21,7 +21,7 @@ namespace SportsStore.Domain
         public void AddItem(Product product, int quantity)
         {
             CartLine cartLine = lineCollection
-                .Where(l => l.Product.ProductId == product.ProductId)
+                .Where(l => l.Product.Product_Id == product.Product_Id)
                 .FirstOrDefault();
 
             if (cartLine == null)

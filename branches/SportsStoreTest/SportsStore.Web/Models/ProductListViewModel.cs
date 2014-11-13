@@ -6,7 +6,8 @@ namespace SportsStore.Web.Models
     public class ProductListViewModel
     {
         public SortingPagingInfo SortingPagingInfo { get; set; }
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ListProductsByCategory_Result> Products { get; set; }
+
         public string CurrentCategory { get; set; }
     }
 }

@@ -1,0 +1,13 @@
+12/11/2014 19:38:37	Este registro contiene información acerca de la operación de importación del script 'dbo.Product.data - Data.sql' en el proyecto 'DB_Scripts' del equipo 'MY-PC' por el usuario 'my.
+12/11/2014 19:38:37	Se inició la importación del archivo: C:\Users\my\AppData\Local\Temp\tmpF066.tmp 
+12/11/2014 19:38:37	Nombre de archivo: C:\Users\my\AppData\Local\Temp\tmpF066.tmp (tamaño: 3515)
+12/11/2014 19:38:37	Analizando script de importación
+12/11/2014 19:38:38	Número total de lotes en el script: 16
+12/11/2014 19:38:38	Número total de instrucciones en el script: 3
+12/11/2014 19:38:38	El script se importó correctamente en el proyecto.
+12/11/2014 19:38:38	Analizando los objetos de esquema...
+12/11/2014 19:38:38	Buscando elementos duplicados en el proyecto
+12/11/2014 19:38:38	Ha finalizado el procesamiento de los elementos duplicados
+12/11/2014 19:38:38	En el script que proporcionó para la operación de importación, no se comprendieron totalmente dos o más instrucciones. Estas instrucciones se movieron al archivo ScriptsIgnoredOnImport.sql. Revise el contenido del archivo para obtener más información.
+12/11/2014 19:38:38	Se guardó un resumen de la importación en la siguiente ubicación: C:\Users\my\Documents\Visual Studio 2013\Projects\SportsStoreTest\DB_Scripts\Registros de importación de scripts\dbo_Product_data - D_20141112073837.log
+12/11/2014 19:38:38	Haga clic en Finalizar para continuar...
