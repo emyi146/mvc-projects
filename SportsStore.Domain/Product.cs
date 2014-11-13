@@ -14,10 +14,17 @@ namespace SportsStore.Domain
     
     public partial class Product
     {
-        public int ProductId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
-        public decimal Price { get; set; }
+        public Product()
+        {
+            this.ProductCategories = new HashSet<ProductCategory>();
+        }
+    
+        public int Product_Id { get; set; }
+        public string Product_Name { get; set; }
+        public string Product_Description { get; set; }
+        public string Product_Category { get; set; }
+        public decimal Product_Price { get; set; }
+    
+        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
     }
 }

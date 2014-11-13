@@ -1,4 +1,5 @@
-﻿using SportsStore.Domain.Abstract;
+﻿using System.Linq;
+using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
 using System.Collections.Generic;
 namespace SportsStore.Domain.Concrete
@@ -11,5 +12,27 @@ namespace SportsStore.Domain.Concrete
         {
             get { return context.Products; }
         }
+
+        public IEnumerable<CategoryLookup> Categories
+        {
+            get
+            {
+                return context.CategoryLookups;
+            }
+        }
+
+        public IEnumerable<ProductCategory> ProductCategories
+        {
+            get
+            {
+                return context.ProductCategories;
+            }
+        }
+
+        public IEnumerable<ListProductsByCategory_Result> ListProductsByCategory(int? categoryId)
+        {
+            return context.ListProductsByCategory(categoryId).AsEnumerable();
+        }
     }
+    
 }

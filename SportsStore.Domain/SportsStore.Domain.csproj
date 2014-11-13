@@ -80,17 +80,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IProductRepository.cs" />
+    <Compile Include="CategoryLookup.cs">
+      <DependentUpon>EFModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Concrete\_NOT_USED_EFDbContext.cs" />
     <Compile Include="Concrete\EFRepository.cs" />
-    <Compile Include="EF_Model.Context.cs">
+    <Compile Include="EFModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EF_Model.Context.tt</DependentUpon>
+      <DependentUpon>EFModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF_Model.cs">
+    <Compile Include="EFModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EF_Model.tt</DependentUpon>
+      <DependentUpon>EFModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF_Model.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -99,8 +102,14 @@
     </Compile>
     <Compile Include="Entities\Cart.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="ListProductsByCategory_Result.cs">
+      <DependentUpon>EFModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Product.cs">
-      <DependentUpon>EF_Model.tt</DependentUpon>
+      <DependentUpon>EFModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductCategory.cs">
+      <DependentUpon>EFModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -110,18 +119,18 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EF_Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="EF_Model.Context.tt">
+    <None Include="EFModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EF_Model.edmx</DependentUpon>
-      <LastGenOutput>EF_Model.Context.cs</LastGenOutput>
+      <LastGenOutput>EFModel.Context.cs</LastGenOutput>
     </None>
     <None Include="EF_Model.edmx.diagram">
       <DependentUpon>EF_Model.edmx</DependentUpon>
     </None>
-    <None Include="EF_Model.tt">
+    <None Include="EFModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EF_Model.edmx</DependentUpon>
-      <LastGenOutput>EF_Model.cs</LastGenOutput>
+      <LastGenOutput>EFModel.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

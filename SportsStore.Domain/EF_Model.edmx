@@ -5,50 +5,193 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SportsStoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CategoryLookup">
+          <Key>
+            <PropertyRef Name="CategoryLookup_Id" />
+          </Key>
+          <Property Name="CategoryLookup_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryLookup_Name" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
-            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="Product_Id" />
           </Key>
-          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="Category" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Price" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="Product_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Product_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Product_Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Product_Price" Type="decimal" Precision="16" Scale="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProductCategory">
+          <Key>
+            <PropertyRef Name="ProductCategory_Id" />
+          </Key>
+          <Property Name="ProductCategory_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductCategory_ProdId" Type="int" Nullable="false" />
+          <Property Name="ProductCategory_CatId" Type="int" Nullable="false" />
+          <Property Name="ProductCategory_DeactivateDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_ProductCategory_CategoryLookup">
+          <End Role="CategoryLookup" Type="Self.CategoryLookup" Multiplicity="1" />
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryLookup">
+              <PropertyRef Name="CategoryLookup_Id" />
+            </Principal>
+            <Dependent Role="ProductCategory">
+              <PropertyRef Name="ProductCategory_CatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductCategory_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Product_Id" />
+            </Principal>
+            <Dependent Role="ProductCategory">
+              <PropertyRef Name="ProductCategory_ProdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ListProductsByCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CategoryId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="SportsStoreModelStoreContainer">
+          <EntitySet Name="CategoryLookup" EntityType="Self.CategoryLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ProductCategory_CategoryLookup" Association="Self.FK_ProductCategory_CategoryLookup">
+            <End Role="CategoryLookup" EntitySet="CategoryLookup" />
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategory_Product" Association="Self.FK_ProductCategory_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SportsStore.Domain.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="SportsStoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="EFContext" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="ListProductsByCategory" ReturnType="Collection(SportsStoreModel.ListProductsByCategory_Result)">
+          <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="CategoryLookups" EntityType="SportsStoreModel.CategoryLookup" />
+          <EntitySet Name="Products" EntityType="SportsStoreModel.Product" />
+          <EntitySet Name="ProductCategories" EntityType="SportsStoreModel.ProductCategory" />
+          <AssociationSet Name="FK_ProductCategory_CategoryLookup" Association="SportsStoreModel.FK_ProductCategory_CategoryLookup">
+            <End Role="CategoryLookup" EntitySet="CategoryLookups" />
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategory_Product" Association="SportsStoreModel.FK_ProductCategory_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="ListProductsByCategory_Result">
+          <Property Type="Int32" Name="Product_Id" Nullable="false" />
+          <Property Type="String" Name="Product_Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Product_Description" Nullable="false" MaxLength="500" />
+          <Property Type="Decimal" Name="Product_Price" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="String" Name="CategoryLookup_Name" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="CategoryLookup">
+          <Key>
+            <PropertyRef Name="CategoryLookup_Id" />
+          </Key>
+          <Property Name="CategoryLookup_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryLookup_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ProductCategories" Relationship="SportsStoreModel.FK_ProductCategory_CategoryLookup" FromRole="CategoryLookup" ToRole="ProductCategory" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
-            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="Product_Id" />
           </Key>
-          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="Product_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Product_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Product_Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Product_Price" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <NavigationProperty Name="ProductCategories" Relationship="SportsStoreModel.FK_ProductCategory_Product" FromRole="Product" ToRole="ProductCategory" />
         </EntityType>
-        <EntityContainer Name="EFContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Products" EntityType="Self.Product" />
-        </EntityContainer>
+        <EntityType Name="ProductCategory">
+          <Key>
+            <PropertyRef Name="ProductCategory_Id" />
+          </Key>
+          <Property Name="ProductCategory_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductCategory_ProdId" Type="Int32" Nullable="false" />
+          <Property Name="ProductCategory_CatId" Type="Int32" Nullable="false" />
+          <Property Name="ProductCategory_DeactivateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CategoryLookup" Relationship="SportsStoreModel.FK_ProductCategory_CategoryLookup" FromRole="ProductCategory" ToRole="CategoryLookup" />
+          <NavigationProperty Name="Product" Relationship="SportsStoreModel.FK_ProductCategory_Product" FromRole="ProductCategory" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_ProductCategory_CategoryLookup">
+          <End Type="SportsStoreModel.CategoryLookup" Role="CategoryLookup" Multiplicity="1" />
+          <End Type="SportsStoreModel.ProductCategory" Role="ProductCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryLookup">
+              <PropertyRef Name="CategoryLookup_Id" />
+            </Principal>
+            <Dependent Role="ProductCategory">
+              <PropertyRef Name="ProductCategory_CatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductCategory_Product">
+          <End Type="SportsStoreModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="SportsStoreModel.ProductCategory" Role="ProductCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Product_Id" />
+            </Principal>
+            <Dependent Role="ProductCategory">
+              <PropertyRef Name="ProductCategory_ProdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SportsStoreModelStoreContainer" CdmEntityContainer="EFContext">
+          <FunctionImportMapping FunctionImportName="ListProductsByCategory" FunctionName="SportsStoreModel.Store.ListProductsByCategory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SportsStoreModel.ListProductsByCategory_Result">
+                <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
+                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
+                <ScalarProperty Name="Product_Description" ColumnName="Product_Description" />
+                <ScalarProperty Name="Product_Price" ColumnName="Product_Price" />
+                <ScalarProperty Name="CategoryLookup_Name" ColumnName="CategoryLookup_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CategoryLookups">
+            <EntityTypeMapping TypeName="SportsStoreModel.CategoryLookup">
+              <MappingFragment StoreEntitySet="CategoryLookup">
+                <ScalarProperty Name="CategoryLookup_Name" ColumnName="CategoryLookup_Name" />
+                <ScalarProperty Name="CategoryLookup_Id" ColumnName="CategoryLookup_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="SportsStore.Domain.Model.Product">
+            <EntityTypeMapping TypeName="SportsStoreModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Category" ColumnName="Category" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Product_Price" ColumnName="Product_Price" />
+                <ScalarProperty Name="Product_Description" ColumnName="Product_Description" />
+                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
+                <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCategories">
+            <EntityTypeMapping TypeName="SportsStoreModel.ProductCategory">
+              <MappingFragment StoreEntitySet="ProductCategory">
+                <ScalarProperty Name="ProductCategory_DeactivateDate" ColumnName="ProductCategory_DeactivateDate" />
+                <ScalarProperty Name="ProductCategory_CatId" ColumnName="ProductCategory_CatId" />
+                <ScalarProperty Name="ProductCategory_ProdId" ColumnName="ProductCategory_ProdId" />
+                <ScalarProperty Name="ProductCategory_Id" ColumnName="ProductCategory_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

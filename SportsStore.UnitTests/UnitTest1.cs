@@ -23,12 +23,12 @@ namespace SportsStore.UnitTests
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new Product[]
             {
-                new Product {ProductId = 1, Name = "P1"},
-                new Product {ProductId = 2, Name = "P2"},
-                new Product {ProductId = 3, Name = "P3"},
-                new Product {ProductId = 4, Name = "P4"},
-                new Product {ProductId = 5, Name = "P5"},
-                new Product {ProductId = 6, Name = "P6"}
+                new Product {Product_Id = 1, Product_Name = "P1"},
+                new Product {Product_Id = 2, Product_Name = "P2"},
+                new Product {Product_Id = 3, Product_Name = "P3"},
+                new Product {Product_Id = 4, Product_Name = "P4"},
+                new Product {Product_Id = 5, Product_Name = "P5"},
+                new Product {Product_Id = 6, Product_Name = "P6"}
             });
             ProductController controller = new ProductController(mock.Object);
             controller.PageSize = 3;
@@ -37,10 +37,10 @@ namespace SportsStore.UnitTests
             ProductListViewModel result = (ProductListViewModel)controller.List(null, 2).Model;
 
             //Assert
-            Product[] prodArray = result.Products.ToArray();
+            ListProductsByCategory_Result[] prodArray = result.Products.ToArray();
             Assert.IsTrue(prodArray.Length == 3);
-            Assert.AreEqual(prodArray[0].Name, "P4");
-            Assert.AreEqual(prodArray[1].Name, "P5");
+            Assert.AreEqual(prodArray[0].Product_Name, "P4");
+            Assert.AreEqual(prodArray[1].Product_Name, "P5");
         }
 
         [TestMethod]
@@ -74,12 +74,12 @@ namespace SportsStore.UnitTests
             //Arrange
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new Product[]{
-                new Product { ProductId = 1, Name = "P1" },
-                new Product { ProductId = 2, Name = "P2" },
-                new Product { ProductId = 3, Name = "P3" },
-                new Product { ProductId = 4, Name = "P4" },
-                new Product { ProductId = 5, Name = "P5" },
-                new Product { ProductId = 6, Name = "P6" }
+                new Product { Product_Id = 1, Product_Name = "P1" },
+                new Product { Product_Id = 2, Product_Name = "P2" },
+                new Product { Product_Id = 3, Product_Name = "P3" },
+                new Product { Product_Id = 4, Product_Name = "P4" },
+                new Product { Product_Id = 5, Product_Name = "P5" },
+                new Product { Product_Id = 6, Product_Name = "P6" }
             });
 
             //Arrange
@@ -109,16 +109,16 @@ namespace SportsStore.UnitTests
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new Product[]
             {
-                new Product {ProductId = 1, Name = "P1", Category = "Cat1"},
-                new Product {ProductId = 2, Name = "P2", Category = "Cat1"},
-                new Product {ProductId = 3, Name = "P3", Category = "Cat1"},
-                new Product {ProductId = 4, Name = "P4", Category = "Cat1"},
-                new Product {ProductId = 5, Name = "P5", Category = "Cat1"},
-                new Product {ProductId = 6, Name = "P6", Category = "Cat2"},
-                new Product {ProductId = 7, Name = "P7", Category = "Cat2"},
-                new Product {ProductId = 8, Name = "P8", Category = "Cat2"},
-                new Product {ProductId = 9, Name = "P9", Category = "Cat3"},
-                new Product {ProductId = 10, Name = "P10", Category = "Cat3"}
+                new Product {Product_Id = 1, Product_Name = "P1", Product_Category = "Cat1"},
+                new Product {Product_Id = 2, Product_Name = "P2", Product_Category = "Cat1"},
+                new Product {Product_Id = 3, Product_Name = "P3", Product_Category = "Cat1"},
+                new Product {Product_Id = 4, Product_Name = "P4", Product_Category = "Cat1"},
+                new Product {Product_Id = 5, Product_Name = "P5", Product_Category = "Cat1"},
+                new Product {Product_Id = 6, Product_Name = "P6", Product_Category = "Cat2"},
+                new Product {Product_Id = 7, Product_Name = "P7", Product_Category = "Cat2"},
+                new Product {Product_Id = 8, Product_Name = "P8", Product_Category = "Cat2"},
+                new Product {Product_Id = 9, Product_Name = "P9", Product_Category = "Cat3"},
+                new Product {Product_Id = 10, Product_Name = "P10", Product_Category = "Cat3"}
             });
 
 
@@ -130,15 +130,15 @@ namespace SportsStore.UnitTests
             ProductListViewModel productListViewModel = (ProductListViewModel)productController.List("Cat1", 2).Model;
 
             //Assert
-            Product[] products = productListViewModel.Products.ToArray();
+            ListProductsByCategory_Result[] products = productListViewModel.Products.ToArray();
 
             SortingPagingInfo pagingInfo = productListViewModel.SortingPagingInfo;
             Assert.AreEqual(pagingInfo.CurrentPage, 2);
             Assert.AreEqual(pagingInfo.ItemsPerPage, 3);
             Assert.AreEqual(pagingInfo.TotalItems, 5);
             Assert.AreEqual(pagingInfo.TotalPages, 2);
-            Assert.IsTrue(products[0].Name == "P4" && products[0].Category == "Cat1");
-            Assert.IsTrue(products[1].Name == "P5" && products[1].Category == "Cat1");
+            Assert.IsTrue(products[0].Product_Name == "P4" && products[0].CategoryLookup_Name == "Cat1");
+            Assert.IsTrue(products[1].Product_Name == "P5" && products[1].CategoryLookup_Name == "Cat1");
             Assert.AreEqual(products.Length, 2);
         }
 
@@ -150,13 +150,13 @@ namespace SportsStore.UnitTests
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new Product[]
             {
-                new Product{ProductId = 1, Name = "P1", Category = "Cat3"},
-                new Product{ProductId = 2, Name = "P2", Category = "Cat1"},
-                new Product{ProductId = 3, Name = "P3", Category = "Cat2"},
-                new Product{ProductId = 4, Name = "P4", Category = "Cat3"},
-                new Product{ProductId = 5, Name = "P5", Category = "Cat3"},
-                new Product{ProductId = 6, Name = "P6", Category = "Cat1"},
-                new Product{ProductId = 7, Name = "P7", Category = "Cat1"}
+                new Product{Product_Id = 1, Product_Name = "P1", Product_Category = "Cat3"},
+                new Product{Product_Id = 2, Product_Name = "P2", Product_Category = "Cat1"},
+                new Product{Product_Id = 3, Product_Name = "P3", Product_Category = "Cat2"},
+                new Product{Product_Id = 4, Product_Name = "P4", Product_Category = "Cat3"},
+                new Product{Product_Id = 5, Product_Name = "P5", Product_Category = "Cat3"},
+                new Product{Product_Id = 6, Product_Name = "P6", Product_Category = "Cat1"},
+                new Product{Product_Id = 7, Product_Name = "P7", Product_Category = "Cat1"}
             });
 
             // Create the controller
@@ -173,19 +173,19 @@ namespace SportsStore.UnitTests
         }
 
         [TestMethod]
-        public void Indicates_Selected_Category()
+        public void Indicates_Selected_Product_Category()
         {
             // Arrange
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(
                 new Product[]
                 {
-                    new Product{ProductId = 1, Description = "P1", Category = "Cat1"},
-                    new Product{ProductId = 2, Description = "P2", Category = "Cat3"},
-                    new Product{ProductId = 3, Description = "P3", Category = "Cat2"},
-                    new Product{ProductId = 4, Description = "P4", Category = "Cat1"},
-                    new Product{ProductId = 5, Description = "P5", Category = "Cat1"},
-                    new Product{ProductId = 6, Description = "P6", Category = "Cat2"},
+                    new Product{Product_Id = 1, Product_Description = "P1", Product_Category = "Cat1"},
+                    new Product{Product_Id = 2, Product_Description = "P2", Product_Category = "Cat3"},
+                    new Product{Product_Id = 3, Product_Description = "P3", Product_Category = "Cat2"},
+                    new Product{Product_Id = 4, Product_Description = "P4", Product_Category = "Cat1"},
+                    new Product{Product_Id = 5, Product_Description = "P5", Product_Category = "Cat1"},
+                    new Product{Product_Id = 6, Product_Description = "P6", Product_Category = "Cat2"},
                 }
             );
 
@@ -193,28 +193,28 @@ namespace SportsStore.UnitTests
             NavController controller = new NavController(mock.Object);
 
             // Act
-            string selectedCategory = controller.Menu("Cat2").ViewBag.SelectedCategory;
+            string selectedProduct_Category = controller.Menu("Cat2").ViewBag.SelectedProduct_Category;
 
             // Assert
-            Assert.AreEqual(selectedCategory, "Cat2");
+            Assert.AreEqual(selectedProduct_Category, "Cat2");
 
         }
 
         [TestMethod]
-        public void Generate_Category_Specific_Product()
+        public void Generate_Product_Category_Specific_Product()
         {
             // Arrange
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(
                 new Product[]
                 {
-                    new Product{ProductId = 1, Name = "P1", Category = "Cat1"},
-                    new Product{ProductId = 2, Name = "P2", Category = "Cat2"},
-                    new Product{ProductId = 3, Name = "P3", Category = "Cat1"},
-                    new Product{ProductId = 4, Name = "P4", Category = "Cat2"},
-                    new Product{ProductId = 5, Name = "P5", Category = "Cat3"},
-                    new Product{ProductId = 6, Name = "P6", Category = "Cat2"},
-                    new Product{ProductId = 7, Name = "P7", Category = "Cat2"},
+                    new Product{Product_Id = 1, Product_Name = "P1", Product_Category = "Cat1"},
+                    new Product{Product_Id = 2, Product_Name = "P2", Product_Category = "Cat2"},
+                    new Product{Product_Id = 3, Product_Name = "P3", Product_Category = "Cat1"},
+                    new Product{Product_Id = 4, Product_Name = "P4", Product_Category = "Cat2"},
+                    new Product{Product_Id = 5, Product_Name = "P5", Product_Category = "Cat3"},
+                    new Product{Product_Id = 6, Product_Name = "P6", Product_Category = "Cat2"},
+                    new Product{Product_Id = 7, Product_Name = "P7", Product_Category = "Cat2"},
                 }
             );
 
